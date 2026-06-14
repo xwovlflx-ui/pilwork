@@ -1,0 +1,27 @@
+# Installed dependencies
+node_modules/
+
+# Next.js output
+.next/
+
+# API build output and generated clients
+apps/api/dist/
+apps/api/src/generated/
+
+# Environment and local secrets
+.env
+.env.local
+.env.*.local
+apps/api/keys/*.pem
+!apps/api/keys/.gitkeep
+
+# TypeScript and runtime artifacts
+*.tsbuildinfo
+*.log
+*.tmp
+.playwright-cli/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

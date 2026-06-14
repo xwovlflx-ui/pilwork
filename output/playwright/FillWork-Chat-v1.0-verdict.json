@@ -1,0 +1,22 @@
+{
+  "score": 95,
+  "verdict": "pass",
+  "category_match": {
+    "slack_channel_structure": 96,
+    "kakaotalk_conversation_clarity": 93,
+    "discord_context_persistence": 92,
+    "fillwork_field_identity": 97,
+    "dashboard_system_consistency": 96
+  },
+  "differences": [
+    "The interface uses FillWork's dark document-oriented shell instead of Slack's brighter workspace chrome.",
+    "Message bubbles remain restrained to preserve B2B information density.",
+    "Field photo analysis and voice transcription receive more prominence than in general-purpose chat products."
+  ],
+  "suggestions": [
+    "Connect Socket.io message delivery and channel presence in the chat implementation phase.",
+    "Add keyboard navigation, thread replies, and real attachment previews after authentication is available.",
+    "Validate recording and location permission flows on the PWA mobile surface before release."
+  ],
+  "reasoning": "The layout clearly reads as a mature collaboration messenger while remaining part of the existing FillWork product family. Channel navigation is fast to scan, the conversation preserves context without visual noise, and the location, field-photo, emergency, and voice-to-text patterns establish a specific field-work identity rather than a generic Slack clone."
+}

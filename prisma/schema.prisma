@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../apps/api/src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum MembershipStatus {
+  INVITED
+  PENDING
+  ACTIVE
+  SUSPENDED
+  REJECTED
+  LEFT
+}
+
+enum Role {
+  SUPER_ADMIN
+  ORG_ADMIN
+  MANAGER
+  MEMBER
+  GUEST
+}
+
+model User {
+  id                  String       @id @default(uuid()) @db.Uuid
+  email               String       @unique @db.VarChar(320)
+  passwordHash        String?      @map("password_hash") @db.VarChar(255)
+  name                String       @db.VarChar(100)
+  phone               String?      @db.VarChar(30)
+  avatarUrl           String?      @map("avatar_url")
+  status              UserStatus   @default(ACTIVE)
+  tokenVersion        Int          @default(1) @map("token_version")
+  emailVerifiedAt     DateTime?    @map("email_verified_at") @db.Timestamptz(3)
+  lastLoginAt         DateTime?    @map("last_login_at") @db.Timestamptz(3)
+  createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt           DateTime?    @map("deleted_at") @db.Timestamptz(3)
+
+  memberships         Membership[] @relation("MembershipUser")
+  invitedMemberships  Membership[] @relation("MembershipInviter")
+  approvedMemberships Membership[] @relation("MembershipApprover")
+  sessions            Session[]
+  auditLogs           AuditLog[]   @relation("AuditActor")
+
+  @@index([status, createdAt])
+  @@map("users")
+}
+
+model Organization {
+  id            String       @id @default(uuid()) @db.Uuid
+  name          String       @db.VarChar(120)
+  slug          String       @unique @db.VarChar(80)
+  plan          String       @default("BUSINESS") @db.VarChar(30)
+  seatLimit     Int          @default(20) @map("seat_limit")
+  settings      Json         @default("{}")
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime?    @map("deleted_at") @db.Timestamptz(3)
+
+  memberships   Membership[]
+  auditLogs     AuditLog[]
+
+  @@index([deletedAt])
+  @@map("organizations")
+}
+
+model Membership {
+  id             String           @id @default(uuid()) @db.Uuid
+  organizationId String           @map("organization_id") @db.Uuid
+  userId         String           @map("user_id") @db.Uuid
+  role           Role             @default(GUEST)
+  status         MembershipStatus @default(PENDING)
+  departmentName String?          @map("department_name") @db.VarChar(100)
+  teamName       String?          @map("team_name") @db.VarChar(100)
+  title          String?          @db.VarChar(100)
+  invitedById    String?          @map("invited_by_id") @db.Uuid
+  approvedById   String?          @map("approved_by_id") @db.Uuid
+  approvedAt     DateTime?        @map("approved_at") @db.Timestamptz(3)
+  rejectedAt     DateTime?        @map("rejected_at") @db.Timestamptz(3)
+  statusReason   String?          @map("status_reason") @db.VarChar(500)
+  lastActiveAt   DateTime?        @map("last_active_at") @db.Timestamptz(3)
+  createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User             @relation("MembershipUser", fields: [userId], references: [id], onDelete: Cascade)
+  invitedBy      User?            @relation("MembershipInviter", fields: [invitedById], references: [id], onDelete: SetNull)
+  approvedBy     User?            @relation("MembershipApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  sessions       Session[]
+
+  @@unique([organizationId, userId])
+  @@index([organizationId, status, role])
+  @@index([userId, status])
+  @@map("memberships")
+}
+
+model Session {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @map("user_id") @db.Uuid
+  membershipId     String    @map("membership_id") @db.Uuid
+  familyId         String    @map("family_id") @db.Uuid
+  refreshTokenHash String    @unique @map("refresh_token_hash") @db.VarChar(64)
+  userAgent        String?   @map("user_agent")
+  ipAddress        String?   @map("ip_address") @db.Inet
+  expiresAt        DateTime  @map("expires_at") @db.Timestamptz(3)
+  revokedAt        DateTime? @map("revoked_at") @db.Timestamptz(3)
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastUsedAt       DateTime? @map("last_used_at") @db.Timestamptz(3)
+
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  membership       Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@index([membershipId, expiresAt])
+  @@index([familyId])
+  @@map("sessions")
+}
+
+model AuditLog {
+  id             String        @id @default(uuid()) @db.Uuid
+  organizationId String?       @map("organization_id") @db.Uuid
+  actorId        String?       @map("actor_id") @db.Uuid
+  action         String        @db.VarChar(100)
+  resourceType   String?       @map("resource_type") @db.VarChar(80)
+  resourceId     String?       @map("resource_id") @db.Uuid
+  before         Json?
+  after          Json?
+  metadata       Json          @default("{}")
+  ipAddress      String?       @map("ip_address") @db.Inet
+  userAgent      String?       @map("user_agent")
+  requestId      String        @map("request_id") @db.Uuid
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  actor          User?         @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt(sort: Desc)])
+  @@index([resourceType, resourceId, createdAt(sort: Desc)])
+  @@index([actorId, createdAt(sort: Desc)])
+  @@map("audit_logs")
+}

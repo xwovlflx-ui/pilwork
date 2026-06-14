@@ -1,0 +1,22 @@
+{
+  "score": 96,
+  "verdict": "pass",
+  "category_match": {
+    "fillwork_identity": 98,
+    "document_first_ux": 95,
+    "field_work_visibility": 98,
+    "active_ai_assistant": 96,
+    "visual_consistency": 95
+  },
+  "differences": [
+    "Added office and field mode controls to the global header.",
+    "Changed the AI assistant from passive shortcuts to four proactive recommendations.",
+    "Added a field upload center covering classification, summaries, and approvals.",
+    "Preserved the approved dark three-column dashboard system."
+  ],
+  "suggestions": [
+    "Use the field-mode state as a shared context for the Project screen.",
+    "Reuse upload-status and AI-insight components in task detail panels."
+  ],
+  "reasoning": "Dashboard v1.0 communicates FillWork's unique combination of document work, field operations, photo evidence, and proactive AI without reverting to a generic admin analytics layout."
+}

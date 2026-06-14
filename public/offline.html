@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <title>오프라인 | FillWork</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090d16;color:#eef2f7;font-family:Pretendard,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100vh;padding:24px;display:grid;place-items:center;background:radial-gradient(circle at 50% 15%,rgba(49,93,169,.17),transparent 28%),#090d16}.card{width:min(520px,100%);padding:34px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:linear-gradient(145deg,#151d2a,#0d141e);box-shadow:0 30px 80px rgba(0,0,0,.36)}.brand{display:flex;align-items:center;gap:9px}.brand span{width:29px;height:29px;display:grid;place-items:center;border-radius:8px;color:#fff;background:linear-gradient(145deg,#2563eb,#7c3aed);font-weight:800}.brand strong{font-size:14px}.symbol{width:62px;height:62px;margin:48px auto 18px;display:grid;place-items:center;border-radius:18px;color:#8eb5f4;background:rgba(48,96,178,.14);box-shadow:0 0 0 9px rgba(48,96,178,.045);font-size:28px}.kicker{margin:0;text-align:center;color:#668ed0;font-size:9px;font-weight:800;letter-spacing:.15em}.card h1{margin:9px 0 10px;text-align:center;font-size:23px}.description{max-width:410px;margin:0 auto;color:#8490a0;font-size:12px;line-height:1.7;text-align:center}.info{margin:27px 0 22px;padding:14px;border:1px solid rgba(255,255,255,.055);border-radius:9px;background:rgba(255,255,255,.018)}.info strong{display:block;color:#c3cedb;font-size:11px}.info p{margin:5px 0 0;color:#687687;font-size:9px;line-height:1.55}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button,.actions a{height:40px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#a8b5c5;background:rgba(255,255,255,.025);font-size:9px;text-decoration:none;cursor:pointer}.actions button{border-color:rgba(69,124,218,.35);color:#fff;background:#356fcf}@media(max-width:520px){body{padding:16px}.card{padding:25px 18px}.symbol{margin-top:35px}.card h1{font-size:20px}.actions{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span>F</span><strong>FillWork</strong></div>
+    <div class="symbol" aria-hidden="true">×</div>
+    <p class="kicker">OFFLINE FIELD MODE</p>
+    <h1>네트워크 연결이 잠시 끊겼습니다.</h1>
+    <p class="description">이미 방문한 화면은 계속 사용할 수 있습니다. 연결이 복구되면 다시 시도해 주세요.</p>
+    <section class="info"><strong>현장 데이터는 이 기기에 유지됩니다.</strong><p>이 데모는 Mock Data를 사용합니다. 실제 업로드와 여러 기기 간 동기화는 온라인 서비스 연결 후 지원됩니다.</p></section>
+    <div class="actions"><button type="button" onclick="location.reload()">연결 다시 확인</button><a href="/">캐시된 홈 열기</a></div>
+  </main>
+</body>
+</html>

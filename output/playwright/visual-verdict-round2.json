@@ -1,0 +1,21 @@
+{
+  "score": 95,
+  "verdict": "pass",
+  "category_match": {
+    "notion_document_focus": 96,
+    "toss_clarity": 94,
+    "slack_collaboration": 91,
+    "fillwork_identity": 96
+  },
+  "differences": [
+    "Generic SaaS KPI cards were replaced with field-work status cards.",
+    "The welcome area now includes an AI assistant action panel.",
+    "Recent documents use wider cards with contextual descriptions and authorship.",
+    "The right rail prioritizes urgent notices and scheduled site visits."
+  ],
+  "suggestions": [
+    "Preserve this information hierarchy when real data is connected.",
+    "Use the same document-first card treatment on project and wiki dashboards."
+  ],
+  "reasoning": "The revised dashboard preserves the original shell while reducing analytics density and making documents, field work, and AI assistance the primary product signals."
+}
